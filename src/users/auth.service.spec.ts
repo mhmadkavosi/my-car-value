@@ -44,11 +44,15 @@ describe('AuthService', () => {
 
   it('throws an error if user signs up with email that is in use', async () => {
     fakeUsersService.find = () =>
-      Promise.resolve([
-        { id: 1, email: 'asdf@asdf.com', password: 'asdf' } as User,
-      ]);
+      Promise.resolve([{ id: 1, email: '1', password: '1' } as User]);
     try {
       await service.signup('asdf@asdf.com', 'asdf');
     } catch (err) {}
+  });
+
+  it('throws if signin is called without unused email', async () => {
+    try {
+      await service.sigin('abasd@afd.com', 'asdlkj');
+    } catch (error) {}
   });
 });
