@@ -5,6 +5,8 @@ import {
   Patch,
   Post,
   UseGuards,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { AuthGurd } from '../gurds/auth.gurds';
@@ -14,6 +16,8 @@ import { User } from '../users/users.entity';
 import { Serialize } from 'src/interceptor/serialize.interceptor';
 import { ReportDto } from './dtos/report.dto';
 import { ApprovedReportDto } from './dtos/approved-report.dto';
+import { query } from 'express';
+import { GetEstimateDto } from './dtos/get-estimate.dto';
 
 @Controller('reports')
 export class ReportsController {
@@ -24,6 +28,11 @@ export class ReportsController {
   @Serialize(ReportDto)
   createReport(@Body() body: CreateReportDto, @CurrentUser() user: User) {
     return this.reportsService.create(body, user);
+  }
+
+  @Get()
+  getEstimate(@Query() query: GetEstimateDto) {
+    return this.reportsService.createEstimate(query);
   }
 
   @Patch('/:id')
